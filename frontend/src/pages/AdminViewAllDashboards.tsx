@@ -1,4 +1,3 @@
-import React from "react";
 import AdminDashboard from "./AdminDashboard_new";
 import TeacherDashboard from "./TeacherDashboard_new";
 import StudentDashboard from "./StudentDashboard_new";

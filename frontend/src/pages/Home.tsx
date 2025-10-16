@@ -101,7 +101,6 @@ const features: Feature[] = [
 ];
 
 export default function Home() {
-  const [apiMessage, setApiMessage] = useState("");
   const [studentCount, setStudentCount] = useState(0);
   const [teacherCount, setTeacherCount] = useState(0);
   const [parentCount, setParentCount] = useState(0);

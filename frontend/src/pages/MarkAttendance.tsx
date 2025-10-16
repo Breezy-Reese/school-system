@@ -9,7 +9,6 @@ interface Student {
 function MarkAttendance() {
   const [students, setStudents] = useState<Student[]>([]);
   const [attendance, setAttendance] = useState<Record<string, boolean>>({});
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchStudents();
@@ -27,8 +26,6 @@ function MarkAttendance() {
       setAttendance(initialAttendance);
     } catch (error) {
       console.error('Error fetching students:', error);
-    } finally {
-      setLoading(false);
     }
   };
 
