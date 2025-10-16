@@ -13,7 +13,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-  origin: 'https://school-system-jade-six.vercel.app/',
+  origin: 'https://school-system-jade-six.vercel.app',
   credentials: true
 }));
 app.use(express.json());
