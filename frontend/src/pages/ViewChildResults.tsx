@@ -32,7 +32,7 @@ function ViewChildResults() {
       if (user) {
         const userObj = JSON.parse(user);
         // Fetch parent's children
-        const response = await fetch(`http://localhost:5000/api/users?role=student&parent=${userObj.email}`);
+        const response = await fetch(`https://school-system-4m52.onrender.com/api/users?role=student&parent=${userObj.email}`);
         const data = await response.json();
         setChildren(data);
         if (data.length > 0) {
@@ -49,7 +49,7 @@ function ViewChildResults() {
 
   const fetchResultsForChild = async (childEmail: string) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/results?student=${childEmail}`);
+      const response = await fetch(`https://school-system-4m52.onrender.com/api/results?student=${childEmail}`);
       const data = await response.json();
       setChildResults(prev => ({ ...prev, [childEmail]: data }));
     } catch (error) {

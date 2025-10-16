@@ -14,7 +14,7 @@ function CheckResults() {
       const user = localStorage.getItem('user');
       if (user) {
         const userObj = JSON.parse(user);
-        const response = await fetch(`http://localhost:5000/api/results?student=${userObj.email}`);
+        const response = await fetch(`https://school-system-4m52.onrender.com/api/results?student=${userObj.email}`);
         const data = await response.json();
         setResults(data);
       }

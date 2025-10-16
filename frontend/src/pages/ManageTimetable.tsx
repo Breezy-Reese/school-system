@@ -31,7 +31,7 @@ function ManageTimetable() {
 
   const fetchTimetable = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/timetable');
+      const response = await fetch('https://school-system-4m52.onrender.com/api/timetable');
       const data = await response.json();
       setTimetable(data);
     } catch (error) {
@@ -43,7 +43,7 @@ function ManageTimetable() {
 
   const fetchTeachers = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/users?role=teacher');
+      const response = await fetch('https://school-system-4m52.onrender.com/api/users?role=teacher');
       const data = await response.json();
       setTeachers(data);
     } catch (error) {
@@ -54,7 +54,7 @@ function ManageTimetable() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/api/timetable', {
+      const response = await fetch('https://school-system-4m52.onrender.com/api/timetable', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -73,7 +73,7 @@ function ManageTimetable() {
 
   const deleteEntry = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/timetable/${id}`, {
+      const response = await fetch(`https://school-system-4m52.onrender.com/api/timetable/${id}`, {
         method: 'DELETE',
       });
       if (response.ok) {

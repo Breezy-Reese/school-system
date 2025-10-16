@@ -27,7 +27,7 @@ function ManageUsers({ role }: ManageUsersProps) {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/users?role=${role}`);
+      const response = await fetch(`https://school-system-4m52.onrender.com/api/users?role=${role}`);
       const data = await response.json();
       setUsers(data);
     } catch (error) {
@@ -52,7 +52,7 @@ function ManageUsers({ role }: ManageUsersProps) {
   const handleDelete = async (id: string) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       try {
-        await fetch(`http://localhost:5000/api/users/${id}`, { method: "DELETE" });
+        await fetch(`https://school-system-4m52.onrender.com/api/users/${id}`, { method: "DELETE" });
         fetchUsers();
       } catch (error) {
         console.error("Error deleting user:", error);
@@ -65,13 +65,13 @@ function ManageUsers({ role }: ManageUsersProps) {
     const userData = { ...formData, role };
     try {
       if (editingUser) {
-        await fetch(`http://localhost:5000/api/users/${editingUser._id}`, {
+        await fetch(`https://school-system-4m52.onrender.com/api/users/${editingUser._id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(userData),
         });
       } else {
-        await fetch("http://localhost:5000/api/users", {
+        await fetch("https://school-system-4m52.onrender.com/api/users", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(userData),

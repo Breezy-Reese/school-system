@@ -107,17 +107,17 @@ export default function Home() {
 
   useEffect(() => {
     // Fetch dynamic stats
-    fetch("http://localhost:5000/api/users/count?role=student")
+    fetch("https://school-system-4m52.onrender.com/api/users/count?role=student")
       .then(res => res.json())
       .then(data => setStudentCount(data.count))
       .catch(err => console.error(err));
 
-    fetch("http://localhost:5000/api/users/count?role=teacher")
+    fetch("https://school-system-4m52.onrender.com/api/users/count?role=teacher")
       .then(res => res.json())
       .then(data => setTeacherCount(data.count))
       .catch(err => console.error(err));
 
-    fetch("http://localhost:5000/api/users/count?role=parent")
+    fetch("https://school-system-4m52.onrender.com/api/users/count?role=parent")
       .then(res => res.json())
       .then(data => setParentCount(data.count))
       .catch(err => console.error(err));

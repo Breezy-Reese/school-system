@@ -16,7 +16,7 @@ function MarkAttendance() {
 
   const fetchStudents = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/users?role=student');
+      const response = await fetch('https://school-system-4m52.onrender.com/api/users?role=student');
       const data = await response.json();
       setStudents(data);
       const initialAttendance = data.reduce((acc: Record<string, boolean>, student: Student) => {
@@ -51,7 +51,7 @@ function MarkAttendance() {
       attendances
     };
     try {
-      const response = await fetch('http://localhost:5000/api/attendance', {
+      const response = await fetch('https://school-system-4m52.onrender.com/api/attendance', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

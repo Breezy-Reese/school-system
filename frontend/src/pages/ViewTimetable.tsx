@@ -37,7 +37,7 @@ function ViewTimetable() {
 
   const fetchTimetable = async (className: string) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/timetable?class=${className}`);
+      const response = await fetch(`https://school-system-4m52.onrender.com/api/timetable?class=${className}`);
       const data = await response.json();
       setTimetable(data);
     } catch (error) {

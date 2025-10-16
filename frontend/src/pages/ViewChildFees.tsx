@@ -29,7 +29,7 @@ function ViewChildFees() {
 
     try {
       // Fetch children of the parent
-      const responseChildren = await fetch(`http://localhost:5000/api/users?role=student&parent=${userObj.email}`);
+      const responseChildren = await fetch(`https://school-system-4m52.onrender.com/api/users?role=student&parent=${userObj.email}`);
       if (!responseChildren.ok) {
         throw new Error('Failed to fetch children');
       }
@@ -37,7 +37,7 @@ function ViewChildFees() {
 
       // Fetch fees for each child
       const feePromises = children.map(async (child: any) => {
-        const responseFees = await fetch(`http://localhost:5000/api/fees?student=${child.email}`);
+        const responseFees = await fetch(`https://school-system-4m52.onrender.com/api/fees?student=${child.email}`);
         if (!responseFees.ok) {
           throw new Error('Failed to fetch fees for child');
         }

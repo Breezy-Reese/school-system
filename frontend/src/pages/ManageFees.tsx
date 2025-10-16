@@ -28,7 +28,7 @@ function ManageFees() {
 
   const fetchFees = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/fees');
+      const response = await fetch('https://school-system-4m52.onrender.com/api/fees');
       if (!response.ok) throw new Error('Failed to fetch fees');
       const data = await response.json();
       setFees(data);
@@ -41,7 +41,7 @@ function ManageFees() {
 
   const fetchStudents = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/users?role=student');
+      const response = await fetch('https://school-system-4m52.onrender.com/api/users?role=student');
       if (!response.ok) throw new Error('Failed to fetch students');
       const data = await response.json();
       setStudents(data);
@@ -53,7 +53,7 @@ function ManageFees() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/api/fees', {
+      const response = await fetch('https://school-system-4m52.onrender.com/api/fees', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -68,7 +68,7 @@ function ManageFees() {
 
   const updateStatus = async (id: string, status: string) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/fees/${id}`, {
+      const response = await fetch(`https://school-system-4m52.onrender.com/api/fees/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status }),
@@ -82,7 +82,7 @@ function ManageFees() {
 
   const deleteFee = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/fees/${id}`, {
+      const response = await fetch(`https://school-system-4m52.onrender.com/api/fees/${id}`, {
         method: 'DELETE',
       });
       if (!response.ok) throw new Error('Failed to delete fee');

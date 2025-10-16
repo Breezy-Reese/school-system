@@ -12,7 +12,10 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'https://school-system-jade-six.vercel.app/',
+  credentials: true
+}));
 app.use(express.json());
 
 // MongoDB Connection
