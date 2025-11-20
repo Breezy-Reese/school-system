@@ -16,19 +16,26 @@ function Login() {
 
     try {
       // Fetch user from database
-      const response = await fetch(`http://localhost:5000/api/users?email=${email}`);
+      const response = await fetch(`https://school-system-4m52.onrender.com/api/users?email=${email}`);
       if (!response.ok) {
         alert("Login failed: " + response.statusText);
         return;
       }
       const users = await response.json();
-
-      if (users.length === 0) {
-        alert("User not found!");
-        return;
+      let user;
+      if (Array.isArray(users)) {
+        if (users.length === 0) {
+          alert("User not found!");
+          return;
+        }
+        user = users[0];
+      } else {
+        user = users;
+        if (!user) {
+          alert("User not found!");
+          return;
+        }
       }
-
-      const user = users[0];
 
       // Simple password check (in production, use proper authentication)
       // For demo purposes, accept any password for seeded users

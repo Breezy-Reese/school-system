@@ -1,14 +1,2 @@
-- [ ] Add state for activeSection in AdminDashboard.tsx
-- [ ] Create tab navigation for sections: Overview, Users, Products, Orders, Reports, System Health, Analytics, Logs
-- [ ] Implement Overview section with existing stats and chart
-- [ ] Implement Users section: display user counts and distribution
-- [ ] Implement Products section: list subjects/classes from timetable
-- [ ] Implement Orders section: fees summary and list
-- [ ] Implement Reports section: results summary
-- [ ] Implement System Health section: display health info
-- [ ] Implement Analytics section: advanced reports and charts
-- [ ] Implement Logs section: recent activities
-- [ ] Add Logout button functionality
-- [ ] Update API fetches to use api.js service
-- [ ] Style the layout with Tailwind CSS
-- [ ] Test navigation and data display
+- [x] Modify backend /api/users to return single user when email query is provided
+- [x] Update frontend Login.tsx to use production API URL and handle single user response
