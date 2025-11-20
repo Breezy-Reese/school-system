@@ -16,7 +16,11 @@ function Login() {
 
     try {
       // Fetch user from database
-      const response = await fetch(`https://school-system-4m52.onrender.com/api/users?email=${email}`);
+      const response = await fetch(`http://localhost:5000/api/users?email=${email}`);
+      if (!response.ok) {
+        alert("Login failed: " + response.statusText);
+        return;
+      }
       const users = await response.json();
 
       if (users.length === 0) {

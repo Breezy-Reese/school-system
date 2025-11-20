@@ -27,7 +27,7 @@ function ManageUsers({ role }: ManageUsersProps) {
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch(`https://school-system-4m52.onrender.com/api/users?role=${role}`);
+      const response = await fetch(`http://localhost:5000/api/users?role=${role}`);
       const data = await response.json();
       setUsers(data);
     } catch (error) {
@@ -65,13 +65,13 @@ function ManageUsers({ role }: ManageUsersProps) {
     const userData = { ...formData, role };
     try {
       if (editingUser) {
-        await fetch(`https://school-system-4m52.onrender.com/api/users/${editingUser._id}`, {
+        await fetch(`http://localhost:5000/api/users/${editingUser._id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(userData),
         });
       } else {
-        await fetch("https://school-system-4m52.onrender.com/api/users", {
+        await fetch("http://localhost:5000/api/users", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(userData),

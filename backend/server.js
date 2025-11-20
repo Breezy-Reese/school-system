@@ -7,6 +7,7 @@ import Attendance from "./models/Attendance.js";
 import Fee from "./models/Fee.js";
 import Timetable from "./models/Timetable.js";
 import Result from "./models/Results.js";
+import { seedDatabase } from "./seed.js";
 
 dotenv.config();
 const app = express();
@@ -19,10 +20,7 @@ app.use(cors({
 app.use(express.json());
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-}).then(() => console.log("MongoDB connected"))
+mongoose.connect(process.env.MONGO_URI).then(() => console.log("MongoDB connected"))
   .catch(err => console.log(err));
 
 // Basic route
@@ -44,6 +42,20 @@ app.get("/api/users/count", async (req, res) => {
         }
         const count = await User.countDocuments({ role });
         res.json({ count });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// API route for user distribution by all roles
+app.get("/api/users/distribution", async (req, res) => {
+    try {
+        const roles = ['student', 'teacher', 'admin', 'parent'];
+        const distribution = {};
+        for (const role of roles) {
+            distribution[role] = await User.countDocuments({ role });
+        }
+        res.json(distribution);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -321,6 +333,174 @@ app.delete("/api/timetable/:id", async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
+});
+
+// Admin routes for dashboard
+app.get("/api/admin/users", async (req, res) => {
+  try {
+    const users = await User.find();
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/api/admin/fees", async (req, res) => {
+  try {
+    const fees = await Fee.find().populate('student', 'name email');
+    res.json(fees);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/api/admin/attendance", async (req, res) => {
+  try {
+    const attendance = await Attendance.find().populate('student', 'name').populate('teacher', 'name');
+    res.json(attendance);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/api/admin/results", async (req, res) => {
+  try {
+    const results = await Result.find().populate('student', 'name email');
+    res.json(results);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/api/admin/timetable", async (req, res) => {
+  try {
+    const timetable = await Timetable.find().populate('teacher', 'name email');
+    res.json(timetable);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/api/admin/reports/sales", async (req, res) => {
+  try {
+    const totalFees = await Fee.aggregate([
+      { $group: { _id: null, totalAmount: { $sum: "$amount" }, count: { $sum: 1 } } }
+    ]);
+    const totalSales = totalFees[0]?.totalAmount || 0;
+    const totalOrders = totalFees[0]?.count || 0;
+    res.json({ totalSales, totalOrders });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/api/admin/reports/users", async (req, res) => {
+  try {
+    const userStats = await User.aggregate([
+      { $group: { _id: "$role", count: { $sum: 1 } } }
+    ]);
+    res.json(userStats);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/api/admin/system/health", async (req, res) => {
+  try {
+    // Simple system health check
+    const dbStats = await mongoose.connection.db.stats();
+    const uptime = process.uptime();
+    const memoryUsage = process.memoryUsage();
+    res.json({
+      status: 'healthy',
+      database: 'connected',
+      uptime: `${Math.floor(uptime / 86400)}d ${Math.floor((uptime % 86400) / 3600)}h`,
+      timestamp: new Date().toISOString(),
+      memory: {
+        rss: `${Math.round(memoryUsage.rss / 1024 / 1024)}MB`,
+        heapTotal: `${Math.round(memoryUsage.heapTotal / 1024 / 1024)}MB`,
+        heapUsed: `${Math.round(memoryUsage.heapUsed / 1024 / 1024)}MB`,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/api/admin/reports/advanced", async (req, res) => {
+  try {
+    // Monthly fees as "sales"
+    const monthlySales = await Fee.aggregate([
+      {
+        $group: {
+          _id: { year: { $year: "$createdAt" }, month: { $month: "$createdAt" } },
+          totalSales: { $sum: "$amount" },
+          orderCount: { $sum: 1 }
+        }
+      },
+      { $sort: { "_id.year": 1, "_id.month": 1 } }
+    ]);
+
+    // Fee status stats
+    const feeStats = await Fee.aggregate([
+      { $group: { _id: "$status", count: { $sum: 1 } } }
+    ]);
+
+    // Attendance status stats
+    const attendanceStats = await Attendance.aggregate([
+      { $group: { _id: "$status", count: { $sum: 1 } } }
+    ]);
+
+    res.json({
+      monthlySales,
+      feeStats,
+      attendanceStats,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get("/api/admin/logs/activity", async (req, res) => {
+  try {
+    // Recent users
+    const recentUsers = await User.find().sort({ createdAt: -1 }).limit(5);
+
+    // Recent fees as "orders"
+    const recentFees = await Fee.find().populate('student', 'name email').sort({ createdAt: -1 }).limit(5);
+
+    // Recent attendance
+    const recentAttendance = await Attendance.find().populate('student', 'name').populate('teacher', 'name').sort({ createdAt: -1 }).limit(5);
+
+    res.json({
+      recentUsers,
+      recentOrders: recentFees,
+      recentAttendance,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Delete user (admin)
+app.delete("/api/admin/users/:id", async (req, res) => {
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    res.json({ message: "User deleted" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Update fee status (admin)
+app.put("/api/fees/:id/status", async (req, res) => {
+  try {
+    const { status } = req.body;
+    const updatedFee = await Fee.findByIdAndUpdate(req.params.id, { status }, { new: true });
+    res.json(updatedFee);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 });
 
 // Server

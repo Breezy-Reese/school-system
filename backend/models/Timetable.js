@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const timetableSchema = new mongoose.Schema({
   class: { type: String, required: true },
@@ -8,4 +8,4 @@ const timetableSchema = new mongoose.Schema({
   teacher: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 }, { timestamps: true });
 
-module.exports = mongoose.model('Timetable', timetableSchema);
+export default mongoose.model('Timetable', timetableSchema);

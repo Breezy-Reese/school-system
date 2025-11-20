@@ -1,7 +1,7 @@
-import AdminDashboard from "./AdminDashboard_new";
-import TeacherDashboard from "./TeacherDashboard_new";
-import StudentDashboard from "./StudentDashboard_new";
-import ParentDashboard from "./ParentDashboard_new";
+import AdminDashboard from "./AdminDashboard";
+import TeacherDashboard from "./TeacherDashboard";
+import StudentDashboard from "./StudentDashboard";
+import ParentDashboard from "./ParentDashboard";
 
 export default function AdminViewAllDashboards() {
   return (

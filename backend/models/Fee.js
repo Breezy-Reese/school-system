@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const feeSchema = new mongoose.Schema({
   student: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
@@ -8,4 +8,4 @@ const feeSchema = new mongoose.Schema({
   description: { type: String },
 }, { timestamps: true });
 
-module.exports = mongoose.model('Fee', feeSchema);
+export default mongoose.model('Fee', feeSchema);

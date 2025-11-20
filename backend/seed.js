@@ -8,13 +8,16 @@ import Timetable from "./models/Timetable.js";
 
 dotenv.config();
 
-const seedDatabase = async () => {
+export const seedDatabase = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
     console.log("Connected to MongoDB");
+    await Timetable.deleteMany({});
+
+    // Seed Parents
 
     // Clear existing data
     await User.deleteMany({});
@@ -85,7 +88,7 @@ const seedDatabase = async () => {
     console.log("Students seeded");
 
     // Seed Admin
-    const admin = { name: "Admin User", email: "admin@school.com", role: "admin" };
+    const admin = { name: "Admin User", email: "basil59mutuku@gmail.com", role: "admin" };
     await User.create(admin);
     console.log("Admin seeded");
 
@@ -160,4 +163,9 @@ const seedDatabase = async () => {
   }
 };
 
-seedDatabase();
+// Only run seeding if this file is executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  seedDatabase();
+}
+
+
